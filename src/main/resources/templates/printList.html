@@ -1,0 +1,47 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>List</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <script src="https://code.iconify.design/1/1.0.7/iconify.min.js"></script>
+</head>
+<body>
+
+    <fieldset>
+        <legend>Breadcrumb</legend>
+        <ul>
+            <li>
+                <a th:each="element : ${breadcrumb}" th:href="@{'/list?path=' + ${element.key}}"
+                   th:text="${element.value} + ' / '" />
+                <a th:if="${breadcrumb.isEmpty()}" th:href="@{'/list?path=/'}" th:text="'/ '" />
+            </li>
+        </ul>
+    </fieldset>
+
+    <fieldset>
+        <legend>List</legend>
+        <table>
+            <tr th:each="dir : ${directories}">
+                <td>
+                    <span class="iconify" data-icon="clarity:directory-line"></span>
+                    <a th:href="@{'/list?path=' + ${pathParam + dir + separator}}" th:text="${dir}" />
+                </td>
+            </tr>
+            <tr th:each="file : ${files}">
+                <td>
+                    <span class="iconify" data-icon="akar-icons:file"></span>
+                    <a th:href="@{'/files/' + ${pathParamFiles + file}}" th:target="_blank" th:text="${file}" />
+                </td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(directories) and #lists.isEmpty(files)}">
+                <td th:if="${errorMessage == null}">
+                    <span>There are no files</span>
+                </td>
+                <td th:if="${errorMessage != null}">
+                    <span th:text="${errorMessage}"></span>
+                </td>
+            </tr>
+        </table>
+    </fieldset>
+</body>
+</html>
